@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Project</title>
+    <link rel="stylesheet" href="styles.css">
+    <script>
+        // Function to detect the user's operating system
+        function getOS() {
+            let userAgent = window.navigator.userAgent,
+                platform = window.navigator.platform,
+                macosPlatforms = ['Macintosh', 'MacIntel', 'MacPPC', 'Mac68K'],
+                windowsPlatforms = ['Win32', 'Win64', 'Windows', 'WinCE'],
+                iosPlatforms = ['iPhone', 'iPad', 'iPod'],
+                os = 'an unknown OS';
+
+            if (macosPlatforms.indexOf(platform) !== -1) {
+                os = 'Mac OS';
+            } else if (iosPlatforms.indexOf(platform) !== -1) {
+                os = 'iOS';
+            } else if (windowsPlatforms.indexOf(platform) !== -1) {
+                os = 'Windows';
+            } else if (/Android/.test(userAgent)) {
+                os = 'Android';
+            } else if (/Linux/.test(platform)) {
+                os = 'Linux';
+            }
+
+            return os;
+        }
+        function loadProjectsDetails() {
+            fetch('projects.json')
+                .then(response => response.json())
+                .then(data => {
+                    // Assume we are loading the first project for simplicity
+                    const project = data[0];
+
+                    // Replace title
+                    document.querySelector("div[style='text-align: center; font-size: 36px; font-weight: bold;']").textContent = project.title;
+
+                    // Replace summary
+                    document.querySelector("#summary + p span").textContent = project.summary;
+
+                    // Replace keywords
+                    document.querySelector("#keywords + p span").textContent = project.keywords.join(", ");
+
+                    // Replace repository link
+                    const repoLink = document.querySelector("#repository-link + p a");
+                    repoLink.href = project.hyperlink;
+                    repoLink.textContent = project.hyperlink;
+                });
+        }
+
+        function applyChanges() {
+            const newTitle = document.getElementById('edit-title').value;
+            const newSummary = document.getElementById('edit-summary').value;
+            const newKeywords = document.getElementById('edit-keywords').value;
+            const newLink = document.getElementById('edit-link').value;
+
+            document.querySelector("div[style='text-align: center; font-size: 36px; font-weight: bold;']").textContent = newTitle;
+            document.querySelector("#summary + p span").textContent = newSummary;
+            document.querySelector("#keywords + p span").textContent = newKeywords;
+            const repoLink = document.querySelector("#repository-link + p a");
+            repoLink.href = newLink;
+            repoLink.textContent = newLink;
+        }
+
+
+
+
+        // Event listener for DOMContentLoaded
+        document.addEventListener("DOMContentLoaded", function() {
+            const osInfo = document.getElementById('os-info');
+            osInfo.textContent = `You are visiting through ${getOS()}.`;
+
+            // Load the navigation bar from nav.html
+            fetch('nav.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('nav-placeholder').innerHTML = data;
+                });
+
+            // Fetch and insert content from Project1Content.html
+            fetch('Project1Content.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('content-placeholder').innerHTML = data;
+                    loadProjectsDetails();
+                });
+
+            document.getElementById('apply-changes').addEventListener('click', function() {
+                applyChanges();
+            });
+        });
+
+    </script>
+    <style>
+        .header-title {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+            margin: 0; /* Remove default margin */
+        }
+        main {
+            background-color: #2e2e2e; /* Dark gray background */
+            color: #d3d3d3; /* Light gray text */
+            padding: 20px; /* Padding */
+        }
+        .edit-area {
+            width: 60%;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #333;
+            color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .edit-area h2 {
+            text-align: center;
+        }
+        .edit-area label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .edit-area input, .edit-area textarea {
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+        .edit-area button {
+            display: block;
+            width: 50%;
+            margin: 20px auto;
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1 class="header-title">My Project</h1>
+    </header>
+    <div id="nav-placeholder"></div>
+    <div id="os-info" class="os-info"></div>
+    <main>
+        <div id="content-placeholder"></div>
+    <!-- Edit Area for User Input -->
+    <div class="edit-area">
+        <h2>Edit Project Details</h2>
+        <label for="edit-title">Title:</label>
+        <input type="text" id="edit-title">
+
+        <label for="edit-summary">Summary:</label>
+        <textarea id="edit-summary"></textarea>
+
+        <label for="edit-keywords">Keywords (comma separated):</label>
+        <input type="text" id="edit-keywords">
+
+        <label for="edit-link">Repository Link:</label>
+        <input type="text" id="edit-link">
+
+        <button id="apply-changes">Apply Changes</button>
+    </div>
+    </main>
+    <footer style="text-align: center;">
+        <p>&copy; 2024 Qiaoru Li</p>
+    </footer>
+</body>
+</html>

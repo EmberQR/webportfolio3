@@ -1,0 +1,41 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+.os-info {
+    background-color: #333; /* 背景颜色 */
+    color: white; /* 文本颜色 */
+    padding: 10px; /* 内边距 */
+    text-align: center; /* 文本对齐 */
+    font-size: 1.2em; /* 字体大小 */
+    font-weight: bold; /* 字体加粗 */
+    border-bottom: 2px solid black; /* 边框颜色 */
+}
+
+nav {
+    background-color: black; /* 背景颜色 */
+    text-align: center; /* 居中对齐 */
+    padding: 10px 0; /* 上下内边距 */
+}
+
+.nav-links {
+    list-style: none; /* 移除列表样式 */
+    padding: 0;
+    margin: 0;
+    display: inline-block; /* 使列表居中 */
+}
+
+.nav-links li {
+    display: inline; /* 横向排列 */
+    margin-right: 15px; /* 列表项间距 */
+}
+
+.nav-links a {
+    text-decoration: none; /* 移除下划线 */
+    color: white; /* 链接颜色 */
+    font-size: 1.2em; /* 字体大小 */
+}
+
+.nav-links a:hover {
+    text-decoration: underline; /* 悬停下划线 */
+}

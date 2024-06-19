@@ -1,0 +1,24 @@
+[
+  {
+    "title": "Numerical Analysis Script on Mathematica",
+    "summary": "A numerical analysis script used in Mathematica to compute some commonly used functions.",
+    "keywords": [
+      "Script",
+      "Mathematica",
+      "numerical analysis"
+    ],
+    "hyperlink": "https://github.com/EmberQR/Numerical-Analysis"
+  },
+  {
+    "title": "NEU website",
+    "summary": "A resource sharing website for Northeastern University (NEU)",
+    "keywords": [
+      "website",
+      "site",
+      "resource",
+      "sharing",
+      "NEU"
+    ],
+    "hyperlink": "https://github.com/EmberQR/NEUsite"
+  }
+]

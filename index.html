@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Portfolio</title>
+    <link rel="stylesheet" href="styles.css">
+    <script>
+        function getOS() {
+            let userAgent = window.navigator.userAgent,
+                platform = window.navigator.platform,
+                macosPlatforms = ['Macintosh', 'MacIntel', 'MacPPC', 'Mac68K'],
+                windowsPlatforms = ['Win32', 'Win64', 'Windows', 'WinCE'],
+                iosPlatforms = ['iPhone', 'iPad', 'iPod'],
+                harmonyOSPlatform = ['HarmonyOS'],
+                os = 'an unknown OS';
+
+            if (macosPlatforms.indexOf(platform) !== -1) {
+                os = 'Mac OS';
+            } else if (iosPlatforms.indexOf(platform) !== -1) {
+                os = 'iOS';
+            } else if (windowsPlatforms.indexOf(platform) !== -1) {
+                os = 'Windows';
+            } else if (/HarmonyOS/.test(userAgent)) {
+                os = 'Harmony OS';
+            } else if (/Android/.test(userAgent)) {
+                os = 'Android';
+            } else if (/Linux/.test(platform)) {
+                os = 'Linux';
+            }
+
+            return os;
+        }
+
+                // Function to load project data from the JSON
+        function loadProjects() {
+            fetch('projects.json')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok ' + response.statusText);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const projectList = document.getElementById('project-list'); // Ensure this ID exists in MainpageContent.html
+                    projectList.innerHTML = ''; // Clear previous contents if any
+
+                    // Populate project data
+                    data.forEach(project => {
+                        const h2 = document.createElement('h2');
+                        h2.id = project.title.toLowerCase().replace(/\s+/g, '-'); // Creating an ID from the title
+
+                        const a = document.createElement('a');
+                        a.href = project.hyperlink; // Set hyperlink
+                        a.innerHTML = `<span>${project.title}</span>`; // Set title within span inside the hyperlink
+
+                        h2.appendChild(a);
+                        projectList.appendChild(h2);
+                    });
+                })
+                .catch(error => console.error('Error loading the projects:', error));
+}
+
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const osInfo = document.getElementById('os-info');
+            osInfo.textContent = `You are visiting through ${getOS()}.`;
+
+            fetch('nav.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('nav-placeholder').innerHTML = data;
+                });
+
+             // Fetch main page content HTML
+            fetch('MainpageContent.html')
+                .then(response => response.text())
+                .then(data => {
+                    // Insert the fetched content into the placeholder
+                    document.getElementById('content-placeholder').innerHTML = data;
+
+                    // After the content is loaded into the DOM, call loadProjects if it exists
+                    if (typeof loadProjects === 'function') {
+                        loadProjects();
+                    } else {
+                        console.error('loadProjects function is not defined.');
+                    }
+                })
+                .catch(error => console.error('Error loading the main page content:', error));
+        });
+        //         Fetch the content of MainpageContent.html
+        // fetch('MainpageContent.html')
+        //     .then(response => response.text())
+        //     .then(data => {
+        //         // Insert the fetched content into the placeholder
+        //         document.getElementById('content-placeholder').innerHTML = data;
+        //     })
+        //     .catch(error => console.error('Error loading the main page content:', error));
+    </script>
+    <style>
+        .header-title {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+            margin: 0; /* Remove default margin */
+        }
+        main {
+            background-color: #2e2e2e; /* Dark gray background */
+            color: #d3d3d3; /* Light gray text */
+            padding: 20px; /* Padding */
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1 class="header-title">Welcome to My Portfolio</h1>
+    </header>
+    <div id="nav-placeholder"></div>
+    <div id="os-info" class="os-info"></div>
+    <main>
+        <div id="content-placeholder"></div>
+    </main>
+    <footer style="text-align: center;">
+        <p>&copy; 2024 Qiaoru Li</p>
+    </footer>
+</body>
+</html>
